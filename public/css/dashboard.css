@@ -1,0 +1,24 @@
+.navbar-brand img {
+    width: 30px;
+    height: 30px;
+}
+.navbar-nav .nav-link {
+    margin-right: 20px;
+    font-size: 18px;
+}
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+.content {
+    padding: 20px;
+}
+.btn-logout {
+    background-color: black;
+    color: white;
+}
+#logout{
+    color: aliceblue;
+}

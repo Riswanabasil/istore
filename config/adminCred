@@ -1,0 +1,4 @@
+module.exports = {
+    ADMIN_EMAIL: 'admin@123.com',
+    ADMIN_PASSWORD: '12345'
+};

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management - iStore</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand img {
+            width: 30px;
+            height: 30px;
+        }
+        .navbar-nav .nav-link {
+            margin-right: 20px;
+            font-size: 18px;
+        }
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .btn-logout {
+            background-color: black;
+            color: white;
+        }
+        .form-inline .form-control {
+            width: auto;
+        }
+        .form-edit {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#"><img src="/images/icon.png" alt="Logo"> iStore</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/products">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin/categories">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users">Customers</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="btn btn-logout nav-link" href="/admin/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="content">
+            <h2>Category Management</h2>
+            <form class="form-inline mb-3" action="/admin/categories/add" method="POST">
+                <div class="form-group mr-2">
+                    <label for="name" class="sr-only">Category Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Category Name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Category</button>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category => { %>
+                        <tr>
+                            <td><%= category.name %></td>
+                            <td>
+                                <div class="d-inline">
+                                    <button class="btn btn-success btn-sm mr-2" onclick="showEditForm('<%= category._id %>')">Edit</button>
+                                    <form id="edit-form-<%= category._id %>" action="/admin/categories/edit" method="POST" class="form-edit mt-2">
+                                        <input type="hidden" name="id" value="<%= category._id %>">
+                                        <input type="text" name="name" value="<%= category.name %>" required>
+                                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="hideEditForm('<%= category._id %>')">Cancel</button>
+                                    </form>
+                                </div>
+                            </td>
+                            <td>
+                                <form action="/admin/categories/<%= category._id %>/toggle-status" method="POST">
+                                    <input type="hidden" name="id" value="<%= category._id %>">
+                                    <button type="submit" class="btn btn-<%= category.isActive ? 'danger' : 'success' %>">
+                                        <%= category.isActive ? 'Deactivate' : 'Activate' %>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'block';
+        }
+
+        function hideEditForm(id) {
+            document.getElementById('edit-form-' + id).style.display = 'none';
+        }
+    </script>
+</body>
+</html>
